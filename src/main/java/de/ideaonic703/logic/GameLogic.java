@@ -1,35 +1,29 @@
 package de.ideaonic703.logic;
 
 import de.ideaonic703.GeometryDash;
+import de.ideaonic703.components.Background;
 import de.ideaonic703.math.Vector2D;
+import de.ideaonic703.scaffold.Element;
+import de.ideaonic703.scaffold.Rectangle;
+import de.ideaonic703.scaffold.Scaffold;
 
 import java.awt.*;
-import java.util.Vector;
 
 public class GameLogic {
     private GeometryDash gd;
-    private int width, height;
-    private RectBody demoRect;
+    private Vector2D size;
+    private Background background;
+    public final static int SCROLL_SPEED = 8;
+    public static final float BACKGROUND_SCROLL_SPEED_MODIFIER = 0.12f;
+    public final static float HUE_CHANGE_FACTOR = 0.2f;
     public GameLogic(GeometryDash gd) {
         this.gd = gd;
-        width = 0;
-        height = 0;
-        demoRect = new RectBody(0, 0, 20, 20, 3, 3);
+        size = gd.getSize();
+        background = (Background)gd.getRootScaffold().add(new Background(gd));
     }
-    public void tick(int frame, int width, int height) {
+    public void tick(int frame, Vector2D size) {
         if(frame % GeometryDash.FPS == 0) System.out.printf("Tick %d!%n", frame);
-        this.width = width;
-        this.height = height;
-        updateDemoRect();
-    }
-    private void updateDemoRect() {
-        demoRect.tick();
-        if(demoRect.getX() <= 0) demoRect.reverseX();
-        if(demoRect.getX() + demoRect.getWidth() >= width) demoRect.reverseX();
-        if(demoRect.getY() <= 0) demoRect.reverseY();
-        if(demoRect.getY() + demoRect.getHeight() >= height) demoRect.reverseY();
-    }
-    public RectBody getDemoRect() {
-        return demoRect;
+        this.size = size;
+        gd.getRootScaffold().update(frame, size);
     }
 }

@@ -35,11 +35,11 @@ public final class AspectRatio {
     public int getHeight(int width) {
         return width/this.width*this.height;
     }
-    public Dimension fixedWidth(int width) {
-        return new Dimension(width, this.getHeight(width));
+    public Vector2D fixedWidth(int width) {
+        return new Vector2D(width, this.getHeight(width));
     }
-    public Dimension fixedHeight(int height) {
-        return new Dimension(this.getWidth(height), height);
+    public Vector2D fixedHeight(int height) {
+        return new Vector2D(this.getWidth(height), height);
     }
     public boolean matches(int width, int height) {
         return width/height == this.width/this.height;

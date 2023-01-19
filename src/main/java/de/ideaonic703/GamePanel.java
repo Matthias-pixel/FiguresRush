@@ -1,5 +1,9 @@
 package de.ideaonic703;
 
+import de.ideaonic703.math.Vector2D;
+import de.ideaonic703.scaffold.Element;
+import de.ideaonic703.scaffold.Scaffold;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -23,26 +27,23 @@ public class GamePanel extends JPanel implements ActionListener {
     private static final long serialVersionUID = 1L;
     @Override
     public Dimension getMinimumSize() {
-        return GeometryDash.ASPECT_RATIO.fixedWidth(400);
+        return GeometryDash.ASPECT_RATIO.fixedWidth(400).toDimension();
     }
     @Override
     public Dimension getPreferredSize() {
-        return GeometryDash.ASPECT_RATIO.fixedWidth(1000);
+        return GeometryDash.ASPECT_RATIO.fixedWidth(1000).toDimension();
     }
     @Override
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
-        Dimension dim = getSize();
-        int width = (int) dim.getWidth();
-        int height = (int) dim.getHeight();
-        gd.getGameGraphics().paint((Graphics2D) g, width, height, frame);
+        Graphics2D g2 = (Graphics2D) g;
+        g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
+                RenderingHints.VALUE_ANTIALIAS_ON);
+        gd.getRootScaffold().draw(g2, Vector2D.ZERO, Vector2D.fromDimension(getSize()), frame);
     }
     @Override
     public void actionPerformed(ActionEvent e) {
-        Dimension dim = getSize();
-        int width = (int) dim.getWidth();
-        int height = (int) dim.getHeight();
-        gd.getGameLogic().tick(frame, width, height);
+        gd.getGameLogic().tick(frame, Vector2D.fromDimension(getSize()));
         repaint();
         frame++;
     }
